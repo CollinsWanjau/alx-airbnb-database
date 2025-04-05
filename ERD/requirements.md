@@ -16,7 +16,7 @@ As a professional developer, completing these tasks will empower you to:
 
 <h2>Key Highlights</h2>
 
-<b>Task 1</b>: Craft a detailed <b>Entity-Relationship Diagram (ERD)</b> to visualize the database design, ensuring clear relationships and properly defined entities.
-<b>Task 2</b>: Apply <b>normalization principles</b> to refine your database design, optimizing data integrity and minimizing redundancy.
-<b>Task 3</b>: Create SQL scripts to define the database schema, incorporating primary keys, foreign keys, and indexes for optimal query performance.
-<b>Task 4</b>: Populate the database with <b>real-world sample data</b>, simulating an Airbnb-like environment with users, properties, bookings, and payments.
+* <b>Task 1</b>: Craft a detailed <b>Entity-Relationship Diagram (ERD)</b> to visualize the database design, ensuring clear relationships and properly defined entities.
+* <b>Task 2</b>: Apply <b>normalization principles</b> to refine your database design, optimizing data integrity and minimizing redundancy.
+* <b>Task 3</b>: Create SQL scripts to define the database schema, incorporating primary keys, foreign keys, and indexes for optimal query performance.
+* <b>Task 4</b>: Populate the database with <b>real-world sample data</b>, simulating an Airbnb-like environment with users, properties, bookings, and payments.
