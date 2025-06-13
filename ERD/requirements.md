@@ -20,3 +20,5 @@ As a professional developer, completing these tasks will empower you to:
 * <b>Task 2</b>: Apply <b>normalization principles</b> to refine your database design, optimizing data integrity and minimizing redundancy.
 * <b>Task 3</b>: Create SQL scripts to define the database schema, incorporating primary keys, foreign keys, and indexes for optimal query performance.
 * <b>Task 4</b>: Populate the database with <b>real-world sample data</b>, simulating an Airbnb-like environment with users, properties, bookings, and payments.
+
+<img>airbnb_erd.png</img>
