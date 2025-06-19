@@ -184,3 +184,58 @@ CREATE TABLE City (
 ```
 
 Currency Normalization
+
+<b>Problem</b>: Assumed single currency, prices without currency context
+
+```sql
+-- Before
+pricepernight: DECIMAL
+total_price: DECIMAL
+
+-- After
+
+CREATE TABLE Currency (
+    currency_id UUID PRIMARY KEY,
+    currency_code CHAR(3) UNIQUE NOT NULL,
+    currency_name VARCHAR(50) NOT NULL,
+    currency_symbol VACHAR(5)
+)
+
+CREATE TABLE PropertyPricing (
+    pricing_id UUID PRIMARY KEY,
+    property_id UUID REFERENCES Property(property_id),
+    currency_id UUID REFERENCES Currency(currency_id),
+    price_per_night DECIMAL(10, 2) NOT NULL
+)
+```
+
+### Role and Permission System
+
+<b>Problem</b> Fixed role ENUM couldn't handle complex permissions
+
+```sql
+
+-- Before
+role: ENUM('guest', 'host', 'admin')
+
+-- After - Flexible Role-Permission System
+
+CREATE TABLE Permission (
+    permission_id UUID PRIMARY KEY,
+    permission_name VARCHAR(100) UNIQUE NOT NULL,
+    permission_category VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE RolePermission (
+    role_id UUID REFERENCES Role(role_id),
+    permission_id UUID REFERENCES Permission(permission_id),
+    PRIMARY KEY (role_id, permission_id)
+);
+
+CREATE TABLE UserRole (
+    user_id UUID REFERENCES User(user_id),
+    role_id UUID REFERENCES Role(role_id),
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, role_id)
+);
+```
