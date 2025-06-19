@@ -209,7 +209,7 @@ CREATE TABLE PropertyPricing (
 )
 ```
 
-### Role and Permission System
+### 3.2 Role and Permission System
 
 <b>Problem</b> Fixed role ENUM couldn't handle complex permissions
 
@@ -238,4 +238,80 @@ CREATE TABLE UserRole (
     assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, role_id)
 );
+```
+
+### 3.3 Pricing System Normalization
+
+<b>Problem</b>: Single price couldn't handle dynamic pricing
+
+```sql
+
+-- Before
+
+pricepernight: DECIMAL
+
+-- After - Dynamic Pricing System
+
+CREATE TABLE PropertyPricing (
+    pricing_id UUID PRIMARY KEY,
+    property_id UUID REFERENCES Property(property_id),
+    currency_id UUID REFERENCES Currency(currency_id),
+    rate_type ENUM('base', 'weekend', 'holiday', 'seasonal', 'special'),
+    price_per_night DECIMAL(10, 2) NOT NULL
+    effective_from DATE
+    effective_to DATE
+)
+
+CREATE TABLE BookingPricing (
+    pricing_detail_id UUID PRIMARY KEY
+    booking_id UUID REFERENCES Booking(booking_id),
+    rate_date DATE NOT NULL,
+    nightly_rate DECIMAL(10, 2) NOT NULL
+);
+
+
+CREATE TABLE BookingFee (
+    fee_id UUID PRIMARY KEY,
+    booking_id UUID REFERENCES Booking(booking_id),
+    fee_type ENUM('cleaning', 'service', 'tax', 'security_deposit'),
+    fee_amount DECIMAL(10, 2) NOT NULL
+)
+```
+
+### 3.4 Payment System Enhancement
+
+<b>Problem</b>: Single payment method ENUM, no payment method details
+
+```sql
+
+--Before
+payment_method: ENUM('credit_card', 'paypal', 'stripe')
+
+-- After - Comprehensive payment system
+
+CREATE TABLE PaymentMethod (
+    method_id UUID PRIMARY KEY,
+    user_id UUID REFERENCES User(user_id),
+    provider_id UUID REFERENCES PaymentProvider(provider_id),
+    card_brand_id UUID REFERENCES CardBrand(brand_id),
+    card_last_four VARCHAR(4),
+    is_default BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE PaymentStatus (
+    status_id UUID PRIMARY KEY,
+    status_name VARCHAR(50) UNIQUE NOT NULL,
+    is_successful BOOLEAN DEFAULT FALSE
+);
+
+-- Enhanced Payment table
+CREATE TABLE Payment (
+    payment_id UUID PRIMARY KEY,
+    booking_id UUID REFERENCES Booking(booking_id),
+    payment_method_id UUID REFERENCS PaymentMethod(method_id)
+    currency_id UUID REFERENCES Currency(currency_id),
+    amount DECIMAL(10, 2) NOT NULL,
+    status_id UUID REFERENCES PaymentStatus(status_id),
+    transaction_reference VARCHAR(100) UNIQUE
+)
 ```
