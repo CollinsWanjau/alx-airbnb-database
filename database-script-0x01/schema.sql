@@ -74,24 +74,36 @@ CREATE INDEX idx_user_active ON User(is_active);  -- For filtering active users
 CREATE INDEX idx_user_created_at ON User(created_at); -- For data-based queries
 CREATE INDEX idx_user_preferred_currency ON User(preffered_currency_id);  -- For currency-based queries
 
--- Sample data to test the core tables
-INSERT INTO Currency (
-  currency_id, currency_code, currency_name, currency_symbol
-) VALUES 
-  (UUID(), 'USD', 'US Dollar', '$'),
-  (UUID(), 'EUR', 'Euro', '€'),
-  (UUID(), 'GBP', 'British Pound', '£');
+-- ============================================
+-- PHASE 2: Location Hierarchy & Property managment
+-- ============================================
+-- Depends on : Currency, User (from Phase 1)
 
-INSERT INTO Role (
-  role_id, role_name , role_description
-) VALUES 
-  (UUID(), 'Admin', 'System administrator with full access'),
-  (UUID(), 'Host', 'Property owner who can list properties'),
-  (UUID(), 'Guest', 'Regular user who can make bookings');
+-- Step 1: Create location Hierarchy (Country -> State -> City)
+CREATE TABLE Country (
+  country_id CHAR(36) PRIMARY KEY,
+  country_code CHAR(2) UNIQUE NOT NULL,
+  country_name VARCHAR(100)
+);
 
-INSERT INTO Permission (
-  permission_id, permission_name, permission_category
-) VALUES 
-  (UUID(), 'manage_users', 'User Management'),
-  (UUID(), 'create_property', 'Property Management'),
-  (UUID(), 'make_booking', 'Booking Management');
+CREATE TABLE State (
+  state_id CHAR(36) PRIMARY KEY,
+  country_id CHAR(36) NOT NULL,
+  state_name VARCHAR(100) NOT NULL,
+  FOREIGN KEY(country_id) REFERENCES Country(country_id)
+);
+
+CREATE TABLE City (
+  city_id CHAR(36) PRIMARY KEY,
+  state_id CHAR(36) NOT NULL,
+  city_name VARCHAR(100),
+  FOREIGN KEY(state_id) REFERENCES State(state_id)
+);
+
+CREATE TABLE Property (
+  property_id CHAR(36) PRIMARY KEY,
+  host_id CHAR(36) NOT NULL,
+  property_name VARCHAR(100) NOT NULL,
+  property_description TEXT,
+  property_type
+);
