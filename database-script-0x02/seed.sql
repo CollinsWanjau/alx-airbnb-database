@@ -103,8 +103,8 @@ INSERT INTO RolePermission (role_id, permission_id) VALUES
   ('r5', 'p18'),  -- moderate_properties
 
   -- Admin permissions (everything)
-  ('r3', 'p1')  -- view_profile
-  ('r3', 'p2')  -- edit_profile
+  ('r3', 'p1'),  -- view_profile
+  ('r3', 'p2'), -- edit_profile
   ('r3', 'p3'), -- delete_user
   ('r3', 'p4'), -- manage_users
   ('r3', 'p5'), -- view_properties
@@ -115,7 +115,7 @@ INSERT INTO RolePermission (role_id, permission_id) VALUES
   ('r3', 'p9'), -- approve_property
   ('r3', 'p10'),  -- make_booking
   ('r3', 'p11'),  -- cancel_booking
-  ('r3', 'p12'), i -- view_all_bookings
+  ('r3', 'p12'),  -- view_all_bookings
   ('r3', 'p13'),  -- manage_bookings
   ('r3', 'p14'),  -- view_earnings
   ('r3', 'p15'),  -- process_payments
@@ -130,10 +130,10 @@ INSERT INTO UserRole (
   user_id, role_id
 ) VALUES
 -- Example assignments (update user_ids to match your actual users)
-('user_1', 'r3'), -- User 1(John) is Admin
-('user_1', 'r2'), -- user_1(John) is also a host
-('user_2', 'r2'), -- User 2(Jane) is host
-('user_3', 'r1'); -- User 3(Michael) is Guest
+('user_1', 'r3'), -- User 1 is Admin
+('user_1', 'r2'), -- user_1 is also a host
+('user_2', 'r2'), -- User 2 is host
+('user_3', 'r1'); -- User 3 is Guest
 
 -- Query to verify the setup
 SELECT 'RBAC Setup Complete!' as status;
