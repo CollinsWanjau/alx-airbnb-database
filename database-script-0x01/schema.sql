@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS Currency;
 DROP TABLE IF EXISTS PropertyStatus;
 
 -- Step 1: Create Currency table (referenced by User)
-CREATE TABLE Currency (
+CREATE TABLE IF NOT EXISTS Currency (
   currency_id CHAR(36) PRIMARY KEY,
   currency_code CHAR(3) UNIQUE NOT NULL,
   currency_name VARCHAR(50) NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE Currency (
 );
 
 -- Step 2: Create User table (core entity)
-CREATE TABLE User (
+CREATE TABLE IF NOT EXISTS User (
   user_id CHAR(36) PRIMARY KEY,
   first_name VARCHAR(100) NOT NULL,
   last_name VARCHAR(100) NOT NULL,
@@ -45,20 +45,20 @@ CREATE TABLE User (
 );
 
 -- Step 3: Create Role and Permission tables (for user management)
-CREATE TABLE Role (
+CREATE TABLE IF NOT EXISTS Role (
   role_id CHAR(36) PRIMARY KEY,
   role_name VARCHAR(100) UNIQUE NOT NULL,
   role_description TEXT
 );
 
-CREATE TABLE Permission (
+CREATE TABLE IF NOT EXISTS Permission (
   permission_id CHAR(36) PRIMARY KEY,
   permission_name VARCHAR(100) UNIQUE NOT NULL,
   permission_category VARCHAR(50) NOT NULL
 );
 
 -- Step 4: Create junction tables for user roles and permissions
-CREATE TABLE RolePermission (
+CREATE TABLE IF NOT EXISTS RolePermission (
   role_id CHAR(36),
   permission_id CHAR(36),
   PRIMARY KEY(role_id, permission_id),
@@ -66,7 +66,7 @@ CREATE TABLE RolePermission (
   FOREIGN KEY(permission_id) REFERENCES Permission(permission_id)
 );
 
-CREATE TABLE UserRole (
+CREATE TABLE IF NOT EXISTS UserRole (
   user_id CHAR(36),
   role_id CHAR(36),
   assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -81,20 +81,20 @@ CREATE TABLE UserRole (
 -- Depends on: Currency, User (from Phase 1)
 
 -- Step 1: Create location Hierarchy (Country -> State -> City)
-CREATE TABLE Country (
+CREATE TABLE IF NOT EXISTS Country (
   country_id CHAR(36) PRIMARY KEY,
   country_code CHAR(2) UNIQUE NOT NULL,
   country_name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE State (
+CREATE TABLE IF NOT EXISTS State (
   state_id CHAR(36) PRIMARY KEY,
   country_id CHAR(36) NOT NULL,
   state_name VARCHAR(100) NOT NULL,
   FOREIGN KEY(country_id) REFERENCES Country(country_id)
 );
 
-CREATE TABLE City (
+CREATE TABLE IF NOT EXISTS City (
   city_id CHAR(36) PRIMARY KEY,
   state_id CHAR(36) NOT NULL,
   city_name VARCHAR(100),
@@ -102,7 +102,7 @@ CREATE TABLE City (
 );
 
 -- Step 2: Create Property table (main property entity)
-CREATE TABLE Property (
+CREATE TABLE IF NOT EXISTS Property (
   property_id CHAR(36) PRIMARY KEY,
   user_id CHAR(36) NOT NULL,
   property_name VARCHAR(100) NOT NULL,
@@ -121,14 +121,14 @@ CREATE TABLE Property (
 );
 
 -- Step 3: Create Property Status table (for property lifecycle management)
-CREATE TABLE PropertyStatus (
+CREATE TABLE IF NOT EXISTS PropertyStatus (
   status_id CHAR(36) PRIMARY KEY,
   status_name VARCHAR(50) NOT NULL,
   status_description TEXT
 );
 
 -- Step 4: Create Property Pricing table (flexible pricing over time)
-CREATE TABLE PropertyPricing (
+CREATE TABLE IF NOT EXISTS PropertyPricing (
   pricing_id CHAR(36) PRIMARY KEY,
   property_id CHAR(36) NOT NULL,
   currency_id CHAR(36) NOT NULL,
