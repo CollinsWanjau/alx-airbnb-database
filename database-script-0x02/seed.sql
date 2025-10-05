@@ -1,3 +1,5 @@
+DELETE FROM Currency;
+
 -- Sample data to test the core tables
 INSERT IGNORE INTO Currency (
   currency_id, currency_code, currency_name, currency_symbol
@@ -5,6 +7,16 @@ INSERT IGNORE INTO Currency (
   (UUID(), 'USD', 'US Dollar', '$'),
   (UUID(), 'EUR', 'Euro', '€'),
   (UUID(), 'GBP', 'British Pound', '£');
+
+DELETE FROM Country;
+
+INSERT IGNORE INTO Country (
+  country_id, country_code, country_name
+) VALUES
+   ('c1', 'US', 'United States'),
+   ('c2', 'CA', 'Canada'),
+   ('c3', 'GB', 'United Kingdom'),
+   ('c4', 'FR', 'France');
 
 DELETE FROM User;
 
